@@ -31,6 +31,15 @@ def legislators_by_zipcode(zip)
   end
 end
 
+def save_thank_you_letter(id, form_letteR)
+  Dir.mkdir('output') unless Dir.exist?('output')
+
+  filename = "output/thanks_#{id}.html"
+
+  File.open(filename, 'w') do |file|
+    file.puts personal_letter
+  end
+end
 
 puts 'EventManager initialized.'
 
@@ -41,11 +50,5 @@ contents.each do |row|
   legislators = legislators_by_zipcode(zipcode)
   personal_letter = erb_template.result(binding)
 
-  Dir.mkdir('output') unless Dir.exist?('output')
-
-  filename = "output/thanks_#{id}.html"
-
-  File.open(filename, 'w') do |file|
-    file.puts personal_letter
-  end
+  save_thank_you_letter(id, personal_letter)
 end
