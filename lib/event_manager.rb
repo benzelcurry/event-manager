@@ -30,7 +30,6 @@ def legislators_by_zipcode(zip)
   end
 end
 
-
 puts 'EventManager initialized.'
 
 contents.each do |row|
