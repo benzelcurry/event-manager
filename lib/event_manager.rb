@@ -15,6 +15,20 @@ def clean_zipcode(zipcode)
   zipcode.to_s.rjust(5, '0')[0..4]
 end
 
+def clean_phone_number(phone_number)
+  num = phone_number.to_s
+
+  unless num.length == 10
+    if num.length == 11 && num[0] == 1
+      num.slice!(0)
+    else
+      num = "Bad number"
+    end
+  end
+
+  num
+end
+
 def legislators_by_zipcode(zip)
   civic_info = Google::Apis::CivicinfoV2::CivicInfoService.new
   # Okay to leave the below key exposed; is public
@@ -47,6 +61,7 @@ contents.each do |row|
   id = row[0]
   name = row[:first_name]
   zipcode = clean_zipcode(row[:zipcode])
+  phone_number = clean_phone_number(row[:homephone])
   legislators = legislators_by_zipcode(zipcode)
   personal_letter = erb_template.result(binding)
 
